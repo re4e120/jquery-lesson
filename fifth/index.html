@@ -105,6 +105,7 @@
           console.log(selectedValue);
           $(".list > li").each(function(index, element){
             var categoryType = $(element).data("category-type");
+            console.log($(element));
             console.log(categoryType);
             if(selectedValue === "all" || selectedValue === categoryType){
               $(element).show();

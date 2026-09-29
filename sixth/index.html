@@ -16,85 +16,87 @@
   <script src="../../common/js/jquery.js"></script>
   <script>
     // 回答はここに書いてね
-    function backFirstScreen(){
-      let searchBtnHtml =
-      `
-        <button type="button" class="btn search-btn" id="pokemon_search">ポケモンを探す</button>
-      `
-      $('[data-js="reset"]').on("click", function(){
-        $(".wrapper").html(searchBtnHtml);
-      });
-    };
-
-    function pokeGet(){
-      let randomPokeNum = Math.floor(Math.random() * 151) + 1;
-      console.log(randomPokeNum);
-      $.ajax({
-        url: `https://pokeapi.co/api/v2/pokemon/${randomPokeNum}` ,
-        method: 'GET'
-      }).done(function(res1) {
-        // 「捕まえる」失敗時の画面表示
-        let failHtml =
+    $(function () {
+      function backFirstScreen(){
+        let searchBtnHtml =
         `
-          <p class="text">逃げられてしまった...</p>
-          <button class="btn mt" data-js="reset">戻る</button>
+          <button type="button" class="btn search-btn" id="pokemon_search">ポケモンを探す</button>
         `
-
-        // 「ポケモンを探す」後の画面表示
-        let encountHtml =
-        `
-          <p class="name"></p>
-          <div>
-            <img class="img" src="${res1.sprites.front_default}" alt="">
-          </div>
-          <div>
-            <button class="btn" id="catch">捕まえる</button>
-            <button class="btn" data-js="reset">逃げる</button>
-          </div>
-        `
-
-
-        console.log(res1.species.url);
-        console.log(res1.sprites.front_default);
-
-        $.ajax({
-          url: 'https://pokeapi.co/api/v2/item/4',
-          method: 'GET'
-        }).done(function(res2) {
-          // 「捕まえる」成功時の画面表示
-          let doneHtml =
-          `
-            <p class="name">ゲットしました</p>
-            <div>
-              <img class="img" src="${res2.sprites.default}" alt="">
-            </div>
-            <button class="btn" data-js="reset">戻る</button>
-          `
-          console.log(res2);
-          $(".wrapper").html(encountHtml);
-          $("#catch").on("click",function(){
-            let value = Math.floor(Math.random() * 100) + 1;
-            console.log(value);
-            if(value >= 50){
-              $(".wrapper").html(doneHtml);
-              backFirstScreen();
-            }else{
-              $(".wrapper").html(failHtml);
-              backFirstScreen();
-            }
-          });
-          backFirstScreen();
-        }).fail(function(err) {
-          console.log("failed getting item")
+        $('[data-js="reset"]').on("click", function(){
+          $(".wrapper").html(searchBtnHtml);
         });
-      }).fail(function(err) {
-        console.log("failed getting poke");
+      };
 
+      function pokeGet(){
+        let randomPokeNum = Math.floor(Math.random() * 151) + 1;
+        console.log(randomPokeNum);
+        $.ajax({
+          url: `https://pokeapi.co/api/v2/pokemon/${randomPokeNum}` ,
+          method: 'GET'
+        }).done(function(res1) {
+          // 「捕まえる」失敗時の画面表示
+          let failHtml =
+          `
+            <p class="text">逃げられてしまった...</p>
+            <button class="btn mt" data-js="reset">戻る</button>
+          `
+
+          // 「ポケモンを探す」後の画面表示
+          let encountHtml =
+          `
+            <p class="name"></p>
+            <div>
+              <img class="img" src="${res1.sprites.front_default}" alt="">
+            </div>
+            <div>
+              <button class="btn" id="catch">捕まえる</button>
+              <button class="btn" data-js="reset">逃げる</button>
+            </div>
+          `
+
+
+          console.log(res1.species.url);
+          console.log(res1.sprites.front_default);
+
+          $.ajax({
+            url: 'https://pokeapi.co/api/v2/item/4',
+            method: 'GET'
+          }).done(function(res2) {
+            // 「捕まえる」成功時の画面表示
+            let doneHtml =
+            `
+              <p class="name">ゲットしました</p>
+              <div>
+                <img class="img" src="${res2.sprites.default}" alt="">
+              </div>
+              <button class="btn" data-js="reset">戻る</button>
+            `
+            console.log(res2);
+            $(".wrapper").html(encountHtml);
+            $("#catch").on("click",function(){
+              let value = Math.floor(Math.random() * 100) + 1;
+              console.log(value);
+              if(value >= 50){
+                $(".wrapper").html(doneHtml);
+                backFirstScreen();
+              }else{
+                $(".wrapper").html(failHtml);
+                backFirstScreen();
+              }
+            });
+            backFirstScreen();
+          }).fail(function(err) {
+            console.log("failed getting item")
+          });
+        }).fail(function(err) {
+          console.log("failed getting poke");
+
+        });
+      };
+
+      $(".wrapper").on("click", ".search-btn", function(){
+        pokeGet();
       });
-    };
-
-    $(".wrapper").on("click", ".search-btn", function(){
-      pokeGet();
     });
   </script>
 </body>

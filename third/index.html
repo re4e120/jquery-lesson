@@ -32,12 +32,13 @@
           var index = $(this).index();
           console.log(index);
         // .eq() 引数に応じたindexの要素を指定します。
-          $(".contents li").eq(index)
+          $(".contents > li").eq(index)
+          console.log($(".contents > li").eq(index));
         // .addClass() クラスを追加します。
-                          .siblings()
-                          .addClass("is-hidden");
-        // .removeClass() クラスを削除します。
-          $(".contents li").eq(index).removeClass("is-hidden");
+        //                   .siblings()
+        //                   .addClass("is-hidden");
+        // // .removeClass() クラスを削除します。
+        //   $(".contents > li").eq(index).removeClass("is-hidden");
         });
       });
     </script>
