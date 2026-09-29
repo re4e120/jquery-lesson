@@ -102,11 +102,8 @@
         // eachには引数を二つ持たせることができ、第一引数はDOM要素のインデックス番号、第二引数ではDOM要素自体が取得できます
         $(".select").on("change", function(){
           var selectedValue = $(this).val();
-          console.log(selectedValue);
           $(".list > li").each(function(index, element){
             var categoryType = $(element).data("category-type");
-            console.log($(element));
-            console.log(categoryType);
             if(selectedValue === "all" || selectedValue === categoryType){
               $(element).show();
             }else{
