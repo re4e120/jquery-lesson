@@ -29,17 +29,10 @@
 
       function pokeGet(){
         let randomPokeNum = Math.floor(Math.random() * 151) + 1;
-        console.log(randomPokeNum);
         $.ajax({
           url: `https://pokeapi.co/api/v2/pokemon/${randomPokeNum}` ,
           method: 'GET'
         }).done(function(res1) {
-          let failHtml =
-          `
-            <p class="text">逃げられてしまった...</p>
-            <button class="btn mt" data-js="reset">戻る</button>
-          `
-
           let encountHtml =
           `
             <p class="name"></p>
@@ -51,35 +44,37 @@
               <button class="btn" data-js="reset">逃げる</button>
             </div>
           `
-
-          $.ajax({
-            url: 'https://pokeapi.co/api/v2/item/4',
-            method: 'GET'
-          }).done(function(res2) {
-            let doneHtml =
-            `
-              <p class="name">ゲットしました</p>
-              <div>
-                <img class="img" src="${res2.sprites.default}" alt="">
-              </div>
-              <button class="btn" data-js="reset">戻る</button>
-            `
-
-            $(".wrapper").html(encountHtml);
-            $("#catch").on("click",function(){
-              let value = Math.floor(Math.random() * 100) + 1;
-              console.log(value);
-              if(value >= 50){
+          $(".wrapper").html(encountHtml);
+          backFirstScreen();
+          $("#catch").on("click", function () {
+            let value = Math.floor(Math.random() * 100) + 1;
+            if (value >= 50) {
+              $.ajax({
+                url: 'https://pokeapi.co/api/v2/item/4',
+                method: 'GET'
+              }).done(function(res2) {
+                let doneHtml =
+                `
+                  <p class="name">ゲットしました</p>
+                  <div>
+                    <img class="img" src="${res2.sprites.default}" alt="">
+                  </div>
+                  <button class="btn" data-js="reset">戻る</button>
+                `
                 $(".wrapper").html(doneHtml);
                 backFirstScreen();
-              }else{
-                $(".wrapper").html(failHtml);
-                backFirstScreen();
-              }
-            });
-            backFirstScreen();
-          }).fail(function(err) {
-            console.log("failed getting item")
+              }).fail(function(err) {
+                console.log("failed getting item")
+              });
+            } else {
+              let failHtml =
+              `
+                <p class="text">逃げられてしまった...</p>
+                <button class="btn mt" data-js="reset">戻る</button>
+              `
+              $(".wrapper").html(failHtml);
+              backFirstScreen();
+            }
           });
         }).fail(function(err) {
           console.log("failed getting poke");
